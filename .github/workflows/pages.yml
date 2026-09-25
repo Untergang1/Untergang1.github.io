@@ -16,6 +16,18 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  keepalive:
+    if: github.repository == 'Untergang1/Untergang1.github.io' && github.ref == 'refs/heads/main' && github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    permissions:
+      actions: write
+    steps:
+      - name: Refresh scheduled workflow enablement
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method PUT "repos/${GITHUB_REPOSITORY}/actions/workflows/pages.yml/enable"
+
   build:
     if: github.repository == 'Untergang1/Untergang1.github.io' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
