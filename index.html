@@ -222,8 +222,8 @@
     Each project link carries:
       data-repo    repository name under Untergang1
       data-author  (forks only) whose commits to show and count
-      data-sha / data-date / data-msg / .n   fallback values, used if GitHub can't be reached
-    The latest commit and the commit count are refreshed from the GitHub API when the page loads.
+      data-sha / data-date / data-msg / .n   fallback values if the static snapshot is unavailable
+    Actions reads this project list daily and publishes data/projects.json with the site.
   -->
 
   <section>
@@ -329,7 +329,6 @@
 
 <script>
 (() => {
-  const USER = "Untergang1";
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const canHover = matchMedia("(hover: hover)").matches;
   const links = [...document.querySelectorAll("ul.list a[data-repo]")];
@@ -368,46 +367,39 @@
     a.addEventListener("blur", stop);
   });
 
-  /* ---------- live data from GitHub (cached for an hour per visitor) ---------- */
-  const TTL = 60 * 60 * 1000;
-  const KEY = "gh-latest-v1";
-  const readCache = () => { try { const c = JSON.parse(localStorage.getItem(KEY)); return c && Date.now() - c.t < TTL ? c.d : null; } catch (e) { return null; } };
-  const writeCache = d => { try { localStorage.setItem(KEY, JSON.stringify({ t: Date.now(), d })); } catch (e) {} };
-
-  const apply = data => links.forEach(a => {
-    const r = data[a.dataset.repo];
-    if (!r) return;
-    a.dataset.sha = r.sha; a.dataset.date = r.date; a.dataset.msg = r.msg;
-    if (r.count) a.querySelector(".n").textContent = r.count;
-    a._fill();
-  });
-
-  const fetchOne = async a => {
-    const q = new URLSearchParams({ per_page: "1" });
-    if (a.dataset.author) q.set("author", a.dataset.author);
-    const res = await fetch(`https://api.github.com/repos/${USER}/${a.dataset.repo}/commits?${q}`,
-                            { headers: { Accept: "application/vnd.github+json" } });
-    if (!res.ok) throw new Error(res.status);
-    const list = await res.json();
-    if (!list.length) return null;
-    const c = list[0];
-    // with per_page=1 the "last" page number equals the number of commits
-    const last = (res.headers.get("Link") || "").match(/[?&]page=(\d+)>;\s*rel="last"/);
-    return {
-      sha: c.sha.slice(0, 7),
-      date: (c.commit.author?.date || c.commit.committer?.date || "").slice(0, 10),
-      msg: c.commit.message.split("\n")[0],
-      count: last ? Number(last[1]) : list.length
-    };
+  /* ---------- daily static snapshot, published with the site ---------- */
+  const loadSnapshot = async () => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+    try {
+      const res = await fetch("./data/projects.json", {
+        cache: "no-cache", signal: controller.signal
+      });
+      if (!res.ok) throw new Error(`Snapshot HTTP ${res.status}`);
+      const data = await res.json();
+      // Validate the whole snapshot before changing any project.
+      if (!data || typeof data.generatedAt !== "string" ||
+          !Number.isFinite(Date.parse(data.generatedAt)) || !data.projects ||
+          !links.every(a => {
+            const r = data.projects[a.dataset.repo];
+            return r && typeof r.sha === "string" && /^[a-f0-9]{7}$/.test(r.sha) &&
+              typeof r.date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(r.date) &&
+              Number.isFinite(Date.parse(r.date)) && typeof r.msg === "string" &&
+              r.msg.trim().length > 0 && Number.isSafeInteger(r.count) && r.count > 0;
+          })) throw new Error("Invalid project snapshot");
+      links.forEach(a => {
+        const r = data.projects[a.dataset.repo];
+        a.dataset.sha = r.sha; a.dataset.date = r.date; a.dataset.msg = r.msg;
+        a.querySelector(".n").textContent = r.count;
+        a._fill();
+      });
+    } catch (error) {
+      console.warn("Project snapshot unavailable; keeping the page defaults.", error);
+    } finally {
+      clearTimeout(timeout);
+    }
   };
-
-  const cached = readCache();
-  if (cached) apply(cached);
-  else Promise.allSettled(links.map(fetchOne)).then(results => {
-    const data = {};
-    results.forEach((r, i) => { if (r.status === "fulfilled" && r.value) data[links[i].dataset.repo] = r.value; });
-    if (Object.keys(data).length) { apply(data); writeCache(data); }
-  });
+  loadSnapshot();
 
   /* ---------- the sun sets as you scroll ---------- */
   const sky = document.getElementById("sky");
