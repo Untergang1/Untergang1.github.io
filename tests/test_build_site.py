@@ -2,7 +2,6 @@ import copy
 import io
 import json
 import tempfile
-import shutil
 import unittest
 from pathlib import Path
 from unittest.mock import call, patch
@@ -27,66 +26,63 @@ def response():
 
 class SnapshotTests(unittest.TestCase):
     def make_source(self, source, html):
-        (source / "templates").mkdir()
-        (source / "content/sections").mkdir(parents=True)
         (source / "assets").mkdir()
-        (source / "templates/page.html").write_text(
-            "<!-- include:header --><!-- include:sections --><!-- include:footer -->")
-        (source / "content/header.html").write_text("")
-        (source / "content/footer.html").write_text("")
-        (source / "content/sections/10-first.html").write_text(html)
+        (source / "index.html").write_text(html, encoding="utf-8")
         for name in ("main.js", "style.css"):
             (source / "assets" / name).write_text("/* asset */")
 
-    def test_render_order_edits_and_slot_validation(self):
+    @patch.object(build, "fetch_project")
+    def test_single_page_edits_order_and_project_changes(self, fetch):
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory)
-            self.make_source(source, "first")
-            (source / "content/sections/20-second.html").write_text("second")
-            (source / "content/header.html").write_text("修改后的简介")
-            self.assertEqual(build.render_page(source), "修改后的简介first\nsecond")
-            template = source / "templates/page.html"
-            valid = template.read_text()
-            for invalid in (valid.replace("<!-- include:header -->", ""),
-                            valid + "<!-- include:header -->", valid + "<!-- include:unknown -->"):
-                template.write_text(invalid)
-                with self.assertRaisesRegex(ValueError, "slot"):
-                    build.render_page(source)
-            template.write_text(valid)
-            for path in (source / "content/sections").glob("*.html"):
-                path.unlink()
-            with self.assertRaisesRegex(ValueError, "No section"):
-                build.render_page(source)
+            output = source / "_site"
+            self.make_source(source, "")
+            fetch.return_value = build.commit_data(PAYLOAD, "")
+            for names in (("one", "two"), ("two", "one", "three"), ("three",)):
+                html = '<!doctype html><p>修改后的简介 &amp; 说明</p><ul class="list">'
+                html += "".join(f'<li><a data-repo="{name}">{name}</a></li>' for name in names)
+                html += '</ul><footer>页脚</footer>'
+                (source / "index.html").write_text(html, encoding="utf-8")
+                snapshot = build.build_site(source, output, "token")
+                self.assertEqual((output / "index.html").read_bytes(),
+                                 (source / "index.html").read_bytes())
+                self.assertEqual(list(snapshot["projects"]), list(names))
 
     @patch.object(build, "fetch_project")
     def test_offline_preview_and_invalid_defaults(self, fetch):
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory)
-            for name in ("templates", "content", "assets"):
-                shutil.copytree(build.ROOT / name, source / name)
+            html = ('<ul class="list"><li><a data-repo="example" data-sha="abcdef1" '
+                    'data-date="2026-09-25" data-msg="说明">'
+                    '<span class="n">3</span></a></li></ul>')
+            self.make_source(source, html)
             output = source / "_site"
             snapshot = build.build_site(source, output, "", preview=True)
             fetch.assert_not_called()
-            self.assertEqual(len(snapshot["projects"]), 11)
-            self.assertEqual(snapshot["projects"]["pku2cal"]["count"], 30)
+            self.assertEqual(snapshot["projects"], {"example": {
+                "sha": "abcdef1", "date": "2026-09-25", "msg": "说明", "count": 3,
+            }})
             self.assertEqual((output / "assets/main.js").read_bytes(),
                              (source / "assets/main.js").read_bytes())
-            section = source / "content/sections/10-tools.html"
-            section.write_text(section.read_text().replace('data-sha="a216277"', 'data-sha="bad"'))
-            with self.assertRaisesRegex(ValueError, "pku2cal"):
+            (source / "index.html").write_text(html.replace('data-sha="abcdef1"', 'data-sha="bad"'))
+            with self.assertRaisesRegex(ValueError, "example"):
                 build.build_site(source, output, "", preview=True)
             self.assertFalse(output.exists())
             with self.assertRaisesRegex(ValueError, "GITHUB_TOKEN"):
                 build.build_site(source, output, "")
 
-    def test_actual_project_list_and_authors(self):
-        projects = build.read_projects(build.render_page(build.ROOT))
-        self.assertEqual(len(projects), 11)
-        self.assertEqual({k: v for k, v in projects.items() if v}, {
-            "wechat-ai": "Untergang1", "Yunzai": "Untergang1",
-            "zvt": "Untergang1", "OSWorld": "untergang404", "AppAgent": "Untergang1",
-        })
-        self.assertIsNone(projects["pku2cal"])
+    def test_actual_page_has_valid_projects_and_defaults(self):
+        html = (build.ROOT / "index.html").read_text(encoding="utf-8")
+        projects = build.read_projects(html)
+        defaults = build.preview_projects(html)
+        self.assertTrue(projects)
+        self.assertEqual(list(projects), list(defaults))
+
+    def test_parser_preserves_optional_authors(self):
+        self.assertEqual(build.read_projects(
+            '<ul class="list"><li><a data-repo="original"></a></li>'
+            '<li><a data-repo="fork" data-author="contributor"></a></li></ul>'
+        ), {"original": None, "fork": "contributor"})
 
     def test_parser_ignores_non_project_links_and_rejects_duplicates(self):
         self.assertEqual(build.read_projects(

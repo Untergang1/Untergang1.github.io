@@ -71,22 +71,6 @@ def read_projects(html):
     return parser.projects
 
 
-def render_page(source):
-    template = (source / "templates/page.html").read_text(encoding="utf-8")
-    slots = re.findall(r"<!--\s*include:([^>]*?)\s*-->", template)
-    if sorted(slots) != ["footer", "header", "sections"]:
-        raise ValueError("Template must contain exactly one header, sections and footer slot")
-    sections = sorted((source / "content/sections").glob("*.html"))
-    if not sections:
-        raise ValueError("No section HTML files found")
-    fragments = {
-        name: (source / f"content/{name}.html").read_text(encoding="utf-8")
-        for name in ("header", "footer")
-    }
-    fragments["sections"] = "\n".join(path.read_text(encoding="utf-8") for path in sections)
-    return re.sub(r"<!--\s*include:([^>]*?)\s*-->", lambda m: fragments[m[1]], template)
-
-
 def preview_projects(html):
     parser = ProjectParser()
     parser.feed(html)
@@ -169,7 +153,7 @@ def build_site(source, output, token, *, preview=False):
         shutil.rmtree(output)
     if not preview and not token:
         raise ValueError("GITHUB_TOKEN is required")
-    html = render_page(source)
+    html = (source / "index.html").read_text(encoding="utf-8")
     project_list = read_projects(html)
     projects = preview_projects(html) if preview else {}
     failures = []

@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Untergang1 的个人主页：做过的项目与最近的提交。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23E9A531'/%3E%3C/svg%3E">
+<title>Untergang1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="./assets/style.css">
+</head>
+<body>
+<main id="main">
+  <div class="sky" id="sky" aria-hidden="true">
+    <span class="sun" id="sun">
+      <svg viewBox="0 0 44 44">
+        <circle class="glow" cx="22" cy="22" r="15" fill="currentColor"/>
+        <g class="rays" id="rays" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <line x1="22" y1="3"  x2="22" y2="8"/>
+          <line x1="22" y1="36" x2="22" y2="41"/>
+          <line x1="3"  y1="22" x2="8"  y2="22"/>
+          <line x1="36" y1="22" x2="41" y2="22"/>
+          <line x1="8.6"  y1="8.6"  x2="12.1" y2="12.1"/>
+          <line x1="31.9" y1="31.9" x2="35.4" y2="35.4"/>
+          <line x1="8.6"  y1="35.4" x2="12.1" y2="31.9"/>
+          <line x1="31.9" y1="12.1" x2="35.4" y2="8.6"/>
+        </g>
+        <circle cx="22" cy="22" r="8.5" fill="currentColor"/>
+      </svg>
+    </span>
+  </div>
+  <div class="horizon-seg" id="hseg" aria-hidden="true"></div>
+
+  <!-- 简介 -->
+  <header>
+    <h1 id="name">Untergang1</h1>
+    <p class="entry">
+      <span class="hw">Un·ter·gang</span>
+      <span>/ˈʊntɐɡaŋ/</span>
+      <span class="pos">德 n.</span>
+      <span class="gloss">沉落；（日月）西沉</span>
+    </p>
+    <p class="lede">对计算机和 AI 里的很多东西都好奇，兴趣比较散。这里按时间记着做过的东西：最近是一些顺手的小工具和机器人，之前花了几个月在 GUI 智能体上。</p>
+  </header>
+
+  <!-- 小工具 -->
+  <section>
+    <div class="sec-head"><h2>小工具</h2><span class="sec-note">2026.09</span></div>
+    <ul class="list">
+      <li>
+        <a href="https://github.com/Untergang1/pku2cal" target="_blank" rel="noopener"
+           data-repo="pku2cal"
+           data-sha="a216277"
+           data-date="2026-09-25"
+           data-msg="docs: add MIT license">
+          <span class="name">pku2cal</span>
+          <span class="meta">TypeScript · <span class="n">30</span></span>
+          <span class="desc">把北大课表转成 ICS 日历，支持单双周和停补课，可以发布到 GitHub Pages 或 Cloudflare Worker 供 Apple Calendar 订阅。</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/Untergang1/codex-usage" target="_blank" rel="noopener"
+           data-repo="codex-usage"
+           data-sha="d16888b"
+           data-date="2026-09-21"
+           data-msg="docs: explain PATH installation and command updates">
+          <span class="name">codex-usage</span>
+          <span class="meta">Shell · <span class="n">5</span></span>
+          <span class="desc">在终端里查看本机 Codex 会话的 token 用量，按会话、日期和子代理汇总，可导出 JSON 或 TSV。</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 微信机器人 -->
+  <section>
+    <div class="sec-head"><h2>微信机器人</h2><span class="sec-note">2026.09</span></div>
+    <ul class="list">
+      <li>
+        <a href="https://github.com/Untergang1/wechat-ai" target="_blank" rel="noopener"
+           data-repo="wechat-ai" data-author="Untergang1"
+           data-sha="7e242e5"
+           data-date="2026-09-21"
+           data-msg="Update README">
+          <span class="name">wechat-ai</span>
+          <span class="meta">fork · <span class="n">26</span></span>
+          <span class="desc">自部署的微信 AI 接入方案。加入了 OneBot v12 传输层，以及按时段运行、通过 Bark 推送的群关键词提醒。</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/Untergang1/pawpilot-plugin" target="_blank" rel="noopener"
+           data-repo="pawpilot-plugin"
+           data-sha="cdd0a22"
+           data-date="2026-09-21"
+           data-msg="Initial commit">
+          <span class="name">pawpilot-plugin</span>
+          <span class="meta">JavaScript · <span class="n">1</span></span>
+          <span class="desc">Yunzai 的聊天与 Function Calling 插件，把自然语言转成已有插件的命令，私聊直接回复，群聊在 @ 时回复。</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/Untergang1/Yunzai" target="_blank" rel="noopener"
+           data-repo="Yunzai" data-author="Untergang1"
+           data-sha="1e77d3a"
+           data-date="2026-09-21"
+           data-msg="docs: focus README on OneBot v12 and WeChat integration">
+          <span class="name">Yunzai</span>
+          <span class="meta">fork · <span class="n">4</span></span>
+          <span class="desc">为 Yunzai 增加 OneBot v12 反向 WebSocket 适配器，用来对接上面的微信接入。</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 量化 -->
+  <section>
+    <div class="sec-head"><h2>量化</h2><span class="sec-note">2026.08–09</span></div>
+    <ul class="list">
+      <li>
+        <a href="https://github.com/Untergang1/zvt" target="_blank" rel="noopener"
+           data-repo="zvt" data-author="Untergang1"
+           data-sha="5e97fd2"
+           data-date="2026-09-06"
+           data-msg="docs: add development TODO roadmap">
+          <span class="name">zvt</span>
+          <span class="meta">fork · <span class="n">117</span></span>
+          <span class="desc">独立维护的 ZVT 个人版。接入东方财富、新浪和同花顺数据，支持增量采集、因子研究和日线策略回测。</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <!-- GUI 智能体 -->
+  <section>
+    <div class="sec-head"><h2>GUI 智能体</h2><span class="sec-note">2024.03–2026.07</span></div>
+    <ul class="list">
+      <li>
+        <a href="https://github.com/Untergang1/UIAgent" target="_blank" rel="noopener"
+           data-repo="UIAgent"
+           data-sha="03df8ee"
+           data-date="2026-07-30"
+           data-msg="docs: restore project summary report">
+          <span class="name">UIAgent</span>
+          <span class="meta">Python · <span class="n">143</span></span>
+          <span class="desc">Windows 桌面自动化。录制操作流程，编译成可复用的 Routine，执行时由控制器在 Routine 和点击、输入等原子操作之间选择。</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/Untergang1/OSWorld" target="_blank" rel="noopener"
+           data-repo="OSWorld" data-author="untergang404"
+           data-sha="546f56e"
+           data-date="2026-07-30"
+           data-msg="Restore SciKit adaptation report">
+          <span class="name">OSWorld</span>
+          <span class="meta">fork · <span class="n">70</span></span>
+          <span class="desc">在 OSWorld 基准里加入 OMNIC、Avantage 等 Windows 科学软件任务，并接入 UIAgent 做评测。</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/Untergang1/ui-tars-lora" target="_blank" rel="noopener"
+           data-repo="ui-tars-lora"
+           data-sha="6d02af2"
+           data-date="2026-07-29"
+           data-msg="docs: remove project report">
+          <span class="name">ui-tars-lora</span>
+          <span class="meta">Python · <span class="n">33</span></span>
+          <span class="desc">为每个应用单独训练 UI-TARS-1.5-7B 的定位 LoRA：输入截图和元素描述，输出一个点击坐标。</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/Untergang1/AppAgent" target="_blank" rel="noopener"
+           data-repo="AppAgent" data-author="Untergang1"
+           data-sha="6321998"
+           data-date="2025-06-27"
+           data-msg="add app">
+          <span class="name">AppAgent</span>
+          <span class="meta">fork · <span class="n">22</span></span>
+          <span class="desc">在手机端智能体 AppAgent 上补充训练、评估流程，并尝试接入 Graph-RAG。</span>
+        </a>
+      </li>
+    </ul>
+    <p class="refs">也读过：
+      <a href="https://github.com/Untergang1/MobileAgent" target="_blank" rel="noopener">MobileAgent</a>、
+      <a href="https://github.com/Untergang1/WebVoyager" target="_blank" rel="noopener">WebVoyager</a>、
+      <a href="https://github.com/Untergang1/android_world" target="_blank" rel="noopener">android_world</a>、
+      <a href="https://github.com/Untergang1/CogVLM" target="_blank" rel="noopener">CogVLM</a>、
+      <a href="https://github.com/Untergang1/imp" target="_blank" rel="noopener">imp</a>
+    </p>
+  </section>
+
+  <!-- 更早 -->
+  <section>
+    <div class="sec-head"><h2>更早</h2><span class="sec-note">2024.12</span></div>
+    <ul class="list">
+      <li>
+        <a href="https://github.com/Untergang1/AIMedical" target="_blank" rel="noopener"
+           data-repo="AIMedical"
+           data-sha="c5dc560"
+           data-date="2024-12-30"
+           data-msg="Update Readme">
+          <span class="name">AIMedical</span>
+          <span class="meta">Vue · <span class="n">20</span></span>
+          <span class="desc">结合大模型和医学知识库的问诊系统，根据症状推荐科室、给出诊断建议。</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 页脚 -->
+  <footer id="horizon">
+    <span>数字为提交数</span>
+    <nav>
+      <a href="https://github.com/Untergang1" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/Untergang1?tab=repositories" target="_blank" rel="noopener">全部仓库</a>
+    </nav>
+  </footer>
+
+</main>
+
+<script src="./assets/main.js" defer></script>
+</body>
+</html>

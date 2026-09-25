@@ -1,15 +1,10 @@
 // Exercise the actual external page script with a minimal DOM and controlled network.
 const assert = require("node:assert/strict");
 const { readFileSync } = require("node:fs");
-const { execFileSync } = require("node:child_process");
-const { fileURLToPath } = require("node:url");
 const { test } = require("node:test");
 const vm = require("node:vm");
 
-const root = fileURLToPath(new URL("../", `file://${__filename}`));
-const html = execFileSync(process.env.PYTHON || "python3", ["-c",
-  "from scripts.build_site import ROOT, render_page; print(render_page(ROOT))"
-], { cwd: root, encoding: "utf8" });
+const html = readFileSync(new URL("../index.html", `file://${__filename}`), "utf8");
 const script = readFileSync(new URL("../assets/main.js", `file://${__filename}`), "utf8");
 const repos = [...html.matchAll(/data-repo="([^"]+)"/g)].map(m => m[1]);
 const snapshot = () => ({
