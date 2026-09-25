@@ -71,32 +71,4 @@
   };
   loadSnapshot();
 
-  /* ---------- the sun sets as you scroll ---------- */
-  const sky = document.getElementById("sky");
-  const sun = document.getElementById("sun");
-  const rays = document.getElementById("rays");
-  const hseg = document.getElementById("hseg");
-  const name = document.getElementById("name");
-  const horizon = document.getElementById("horizon");
-  let startY = 0, endY = 0, ticking = false;
-
-  const measure = () => {
-    startY = name.offsetTop + name.offsetHeight * 0.5;
-    endY = horizon.offsetTop;
-    sky.style.height = endY + "px";
-    hseg.style.top = endY + "px";
-    place();
-  };
-  const place = () => {
-    ticking = false;
-    const max = document.documentElement.scrollHeight - innerHeight;
-    const p = max > 4 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
-    sun.style.transform = `translateY(${startY + (endY - startY) * p}px)`;
-    sun.style.setProperty("--p", (p * p).toFixed(3));
-    rays.style.transform = `rotate(${p * 90}deg)`;
-  };
-  addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(place); } }, { passive: true });
-  addEventListener("resize", measure);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
-  measure();
 })();
