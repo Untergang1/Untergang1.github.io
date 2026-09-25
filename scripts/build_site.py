@@ -1,5 +1,6 @@
 """Build a complete Pages snapshot using only the Python standard library."""
 
+import argparse
 import json
 import os
 import re
@@ -22,11 +23,16 @@ class ProjectParser(HTMLParser):
         super().__init__()
         self.lists = []
         self.projects = {}
+        self.defaults = {}
+        self.current_repo = None
+        self.in_count = False
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         if tag == "ul":
             self.lists.append("list" in (attrs.get("class") or "").split())
+        if tag == "span" and self.current_repo and "n" in (attrs.get("class") or "").split():
+            self.in_count = True
         if tag != "a" or not any(self.lists) or "data-repo" not in attrs:
             return
         repo = attrs["data-repo"]
@@ -38,8 +44,20 @@ class ProjectParser(HTMLParser):
         if author is not None and not re.fullmatch(r"[A-Za-z0-9-]+", author):
             raise ValueError(f"Invalid data-author for {repo}")
         self.projects[repo] = author
+        self.current_repo = repo
+        self.defaults[repo] = {key: attrs.get(f"data-{key}", "") for key in ("sha", "date", "msg")}
+        self.defaults[repo]["count"] = ""
+
+    def handle_data(self, data):
+        if self.in_count and self.current_repo:
+            self.defaults[self.current_repo]["count"] += data
 
     def handle_endtag(self, tag):
+        if tag == "span":
+            self.in_count = False
+        if tag == "a":
+            self.current_repo = None
+            self.in_count = False
         if tag == "ul" and self.lists:
             self.lists.pop()
 
@@ -51,6 +69,40 @@ def read_projects(html):
     if not parser.projects:
         raise ValueError("No projects found in ul.list")
     return parser.projects
+
+
+def render_page(source):
+    template = (source / "templates/page.html").read_text(encoding="utf-8")
+    slots = re.findall(r"<!--\s*include:([^>]*?)\s*-->", template)
+    if sorted(slots) != ["footer", "header", "sections"]:
+        raise ValueError("Template must contain exactly one header, sections and footer slot")
+    sections = sorted((source / "content/sections").glob("*.html"))
+    if not sections:
+        raise ValueError("No section HTML files found")
+    fragments = {
+        name: (source / f"content/{name}.html").read_text(encoding="utf-8")
+        for name in ("header", "footer")
+    }
+    fragments["sections"] = "\n".join(path.read_text(encoding="utf-8") for path in sections)
+    return re.sub(r"<!--\s*include:([^>]*?)\s*-->", lambda m: fragments[m[1]], template)
+
+
+def preview_projects(html):
+    parser = ProjectParser()
+    parser.feed(html)
+    parser.close()
+    for repo, entry in parser.defaults.items():
+        try:
+            entry["count"] = int(entry["count"].strip())
+            if not 0 < entry["count"] <= 2**53 - 1:
+                raise ValueError("Invalid count")
+            if not re.fullmatch(r"[a-f0-9]{7}", entry["sha"]) or not entry["msg"].strip():
+                raise ValueError("Invalid SHA or message")
+            if date.fromisoformat(entry["date"]).isoformat() != entry["date"]:
+                raise ValueError("Invalid date")
+        except ValueError as error:
+            raise ValueError(f"Invalid preview defaults for {repo}: {error}") from error
+    return parser.defaults
 
 
 def commit_data(payload, link_header):
@@ -111,16 +163,17 @@ def fetch_project(repo, author, token):
         time.sleep((2, 5)[attempt])
 
 
-def build_site(source, output, token):
+def build_site(source, output, token, *, preview=False):
     # Never leave a previous local artifact available after a failed build.
     if output.exists():
         shutil.rmtree(output)
-    if not token:
+    if not preview and not token:
         raise ValueError("GITHUB_TOKEN is required")
-    html = (source / "index.html").read_text(encoding="utf-8")
-    projects = {}
+    html = render_page(source)
+    project_list = read_projects(html)
+    projects = preview_projects(html) if preview else {}
     failures = []
-    for repo, author in read_projects(html).items():
+    for repo, author in ([] if preview else project_list.items()):
         try:
             projects[repo] = fetch_project(repo, author, token)
             print(f"Fetched {repo}")
@@ -135,6 +188,7 @@ def build_site(source, output, token):
     try:
         (output / "data").mkdir(parents=True)
         (output / "index.html").write_text(html, encoding="utf-8")
+        shutil.copytree(source / "assets", output / "assets")
         (output / "data/projects.json").write_text(
             json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     except OSError:
@@ -144,12 +198,16 @@ def build_site(source, output, token):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--preview", action="store_true", help="Build offline using HTML commit defaults")
+    args = parser.parse_args()
     try:
-        snapshot = build_site(ROOT, ROOT / "_site", os.environ.get("GITHUB_TOKEN", ""))
+        snapshot = build_site(ROOT, ROOT / "_site", os.environ.get("GITHUB_TOKEN", ""), preview=args.preview)
     except (OSError, ValueError, RuntimeError) as error:
         print(str(error), file=sys.stderr)
         return 1
-    summary = f"Fetched {len(snapshot['projects'])} projects at {snapshot['generatedAt']}.\n"
+    action = "Previewed" if args.preview else "Fetched"
+    summary = f"{action} {len(snapshot['projects'])} projects at {snapshot['generatedAt']}.\n"
     print(summary, end="")
     if os.environ.get("GITHUB_STEP_SUMMARY"):
         with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as stream:

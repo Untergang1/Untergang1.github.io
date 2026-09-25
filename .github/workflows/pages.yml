@@ -28,11 +28,11 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
-      - name: Test snapshot generation and page behavior
+      - name: Test page assembly, snapshot generation and page behavior
         run: |
           python -m unittest discover -s tests -v
           node --test tests/page.test.cjs
-      - name: Fetch complete project snapshot
+      - name: Build site with complete project snapshot
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python scripts/build_site.py

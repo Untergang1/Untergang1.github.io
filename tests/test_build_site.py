@@ -2,6 +2,7 @@ import copy
 import io
 import json
 import tempfile
+import shutil
 import unittest
 from pathlib import Path
 from unittest.mock import call, patch
@@ -25,8 +26,61 @@ def response():
 
 
 class SnapshotTests(unittest.TestCase):
+    def make_source(self, source, html):
+        (source / "templates").mkdir()
+        (source / "content/sections").mkdir(parents=True)
+        (source / "assets").mkdir()
+        (source / "templates/page.html").write_text(
+            "<!-- include:header --><!-- include:sections --><!-- include:footer -->")
+        (source / "content/header.html").write_text("")
+        (source / "content/footer.html").write_text("")
+        (source / "content/sections/10-first.html").write_text(html)
+        for name in ("main.js", "style.css"):
+            (source / "assets" / name).write_text("/* asset */")
+
+    def test_render_order_edits_and_slot_validation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory)
+            self.make_source(source, "first")
+            (source / "content/sections/20-second.html").write_text("second")
+            (source / "content/header.html").write_text("修改后的简介")
+            self.assertEqual(build.render_page(source), "修改后的简介first\nsecond")
+            template = source / "templates/page.html"
+            valid = template.read_text()
+            for invalid in (valid.replace("<!-- include:header -->", ""),
+                            valid + "<!-- include:header -->", valid + "<!-- include:unknown -->"):
+                template.write_text(invalid)
+                with self.assertRaisesRegex(ValueError, "slot"):
+                    build.render_page(source)
+            template.write_text(valid)
+            for path in (source / "content/sections").glob("*.html"):
+                path.unlink()
+            with self.assertRaisesRegex(ValueError, "No section"):
+                build.render_page(source)
+
+    @patch.object(build, "fetch_project")
+    def test_offline_preview_and_invalid_defaults(self, fetch):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory)
+            for name in ("templates", "content", "assets"):
+                shutil.copytree(build.ROOT / name, source / name)
+            output = source / "_site"
+            snapshot = build.build_site(source, output, "", preview=True)
+            fetch.assert_not_called()
+            self.assertEqual(len(snapshot["projects"]), 11)
+            self.assertEqual(snapshot["projects"]["pku2cal"]["count"], 30)
+            self.assertEqual((output / "assets/main.js").read_bytes(),
+                             (source / "assets/main.js").read_bytes())
+            section = source / "content/sections/10-tools.html"
+            section.write_text(section.read_text().replace('data-sha="a216277"', 'data-sha="bad"'))
+            with self.assertRaisesRegex(ValueError, "pku2cal"):
+                build.build_site(source, output, "", preview=True)
+            self.assertFalse(output.exists())
+            with self.assertRaisesRegex(ValueError, "GITHUB_TOKEN"):
+                build.build_site(source, output, "")
+
     def test_actual_project_list_and_authors(self):
-        projects = build.read_projects((build.ROOT / "index.html").read_text())
+        projects = build.read_projects(build.render_page(build.ROOT))
         self.assertEqual(len(projects), 11)
         self.assertEqual({k: v for k, v in projects.items() if v}, {
             "wechat-ai": "Untergang1", "Yunzai": "Untergang1",
@@ -110,14 +164,14 @@ class SnapshotTests(unittest.TestCase):
             source = Path(directory)
             output = source / "_site"
             html = '<ul class="list"><a data-repo="one"></a><a data-repo="two"></a></ul>'
-            (source / "index.html").write_text(html)
+            self.make_source(source, html)
             fetch.return_value = build.commit_data(PAYLOAD, "")
             snapshot = build.build_site(source, output, "token")
             self.assertEqual(json.loads((output / "data/projects.json").read_text()), snapshot)
             self.assertEqual((output / "index.html").read_text(), html)
             self.assertEqual(len(snapshot["projects"]), 2)
             self.assertEqual(sorted(str(p.relative_to(output)) for p in output.rglob("*") if p.is_file()),
-                             ["data/projects.json", "index.html"])
+                             ["assets/main.js", "assets/style.css", "data/projects.json", "index.html"])
             fetch.side_effect = [build.commit_data(PAYLOAD, ""), RuntimeError("GitHub HTTP 404")]
             with self.assertRaisesRegex(RuntimeError, "two: GitHub HTTP 404"):
                 build.build_site(source, output, "token")
