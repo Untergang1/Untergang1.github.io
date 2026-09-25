@@ -1,803 +1,443 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style>/* copy from https://github.com/sindresorhus/github-markdown-css/ */
-
-html,body{background-color: #2d2d2d;}
-
-.markdown-body {
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  line-height: 1.5;
-  color: #cccccc;
-  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
-  font-size: 16px;
-  line-height: 1.5;
-  word-wrap: break-word;
-}
-
-.markdown-body .octicon {
-  display: inline-block;
-  fill: currentColor;
-  vertical-align: text-bottom;
-}
-
-.markdown-body figure{margin:0;padding:0; display:table;}
-.markdown-body figure figcaption{font-size:92%; text-align:center; color:#999999;}
-
-.markdown-body .anchor {
-  float: left;
-  line-height: 1;
-  margin-left: -20px;
-  padding-right: 4px;
-}
-
-.markdown-body .anchor:focus {
-  outline: none;
-}
-
-.markdown-body h1 .octicon-link,
-.markdown-body h2 .octicon-link,
-.markdown-body h3 .octicon-link,
-.markdown-body h4 .octicon-link,
-.markdown-body h5 .octicon-link,
-.markdown-body h6 .octicon-link {
-  color: #66cccc;
-  vertical-align: middle;
-  visibility: hidden;
-}
-
-.markdown-body h1:hover .anchor,
-.markdown-body h2:hover .anchor,
-.markdown-body h3:hover .anchor,
-.markdown-body h4:hover .anchor,
-.markdown-body h5:hover .anchor,
-.markdown-body h6:hover .anchor {
-  text-decoration: none;
-}
-
-.markdown-body details {
-  display: block;
-}
-
-.markdown-body summary {
-  display: list-item;
-}
-
-.markdown-body a {
-  background-color: initial;
-}
-
-.markdown-body a:active,
-.markdown-body a:hover {
-  outline-width: 0;
-}
-
-.markdown-body strong {
-  font-weight: inherit;
-  font-weight: bolder;
-}
-.markdown-body strong{
-  color: #f99157;
-}
-.markdown-body em{
-  color: #ffcc66;
-}
-
-.markdown-body h1 {
-  font-size: 2em;
-  margin: .67em 0;
-}
-
-.markdown-body img {
-  border-style: none;
-}
-
-.markdown-body code,
-.markdown-body kbd,
-.markdown-body pre {
-  font-family: monospace,monospace;
-  font-size: 1em;
-}
-
-.markdown-body hr {
-  box-sizing: initial;
-  height: 0;
-  overflow: visible;
-}
-
-.markdown-body input {
-  font: inherit;
-  margin: 0;
-}
-
-.markdown-body input {
-  overflow: visible;
-}
-
-.markdown-body [type=checkbox] {
-  box-sizing: border-box;
-  padding: 0;
-}
-
-.markdown-body * {
-  box-sizing: border-box;
-}
-
-.markdown-body input {
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-}
-
-.markdown-body a {
-  color: #99cc99;
-  text-decoration: none;
-}
-.markdown-body mjx-container[jax="SVG"] > svg a{fill:#99cc99;stroke: #99cc99;}
-
-.markdown-body a:hover {
-  text-decoration: underline;
-}
-
-.markdown-body strong {
-  font-weight: 600;
-}
-
-.markdown-body hr:after,
-.markdown-body hr:before {
-  display: table;
-  content: "";
-}
-
-.markdown-body hr:after {
-  clear: both;
-}
-
-.markdown-body table {
-  border-spacing: 0;
-  border-collapse: collapse;
-}
-
-.markdown-body td,
-.markdown-body th {
-  padding: 0;
-}
-
-.markdown-body details summary {
-  cursor: pointer;
-}
-
-.markdown-body kbd {
-  display: inline-block;
-  padding: 3px 5px;
-  font: 12px SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
-  line-height: 12px;
-  color: #999999;
-  vertical-align: middle;
-  background-color: #333333;
-  border: 1px solid #494949;
-  border-radius: 3px;
-}
-
-.markdown-body h1,
-.markdown-body h2,
-.markdown-body h3,
-.markdown-body h4,
-.markdown-body h5,
-.markdown-body h6 {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.markdown-body h1 {
-  font-size: 32px;
-}
-
-.markdown-body h1,
-.markdown-body h2 {
-  font-weight: 600;
-}
-
-.markdown-body h2 {
-  font-size: 24px;
-}
-
-.markdown-body h3 {
-  font-size: 20px;
-}
-
-.markdown-body h3,
-.markdown-body h4 {
-  font-weight: 600;
-}
-
-.markdown-body h4 {
-  font-size: 16px;
-}
-
-.markdown-body h5 {
-  font-size: 14px;
-}
-
-.markdown-body h5,
-.markdown-body h6 {
-  font-weight: 600;
-}
-
-.markdown-body h6 {
-  font-size: 12px;
-}
-
-.markdown-body p {
-  margin-top: 0;
-  margin-bottom: 10px;
-}
-
-.markdown-body blockquote {
-  margin: 0;
-}
-
-.markdown-body ol,
-.markdown-body ul {
-  padding-left: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.markdown-body ol ol,
-.markdown-body ul ol {
-  list-style-type: lower-roman;
-}
-
-.markdown-body ol ol ol,
-.markdown-body ol ul ol,
-.markdown-body ul ol ol,
-.markdown-body ul ul ol {
-  list-style-type: lower-alpha;
-}
-
-.markdown-body dd {
-  margin-left: 0;
-}
-
-.markdown-body code,
-.markdown-body pre {
-  font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
-  font-size: 12px;
-}
-
-.markdown-body pre {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.markdown-body input::-webkit-inner-spin-button,
-.markdown-body input::-webkit-outer-spin-button {
-  margin: 0;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-.markdown-body:after,
-.markdown-body:before {
-  display: table;
-  content: "";
-}
-
-.markdown-body:after {
-  clear: both;
-}
-
-.markdown-body>:first-child {
-  margin-top: 0!important;
-}
-
-.markdown-body>:last-child {
-  margin-bottom: 0!important;
-}
-
-.markdown-body a:not([href]) {
-  color: inherit;
-  text-decoration: none;
-}
-
-.markdown-body blockquote,
-.markdown-body details,
-.markdown-body dl,
-.markdown-body ol,
-.markdown-body p,
-.markdown-body pre,
-.markdown-body table,
-.markdown-body ul {
-  margin-top: 0;
-  margin-bottom: 16px;
-}
-
-.markdown-body hr {
-  height: .25em;
-  padding: 0;
-  margin: 24px 0;
-  background-color: #494949;
-  border: 0;
-}
-
-.markdown-body blockquote {
-  padding: 0 1em;
-  color: #9b9b9b;
-  border-left: .25em solid #f2777a;
-}
-
-.markdown-body blockquote>:first-child {
-  margin-top: 0;
-}
-
-.markdown-body blockquote>:last-child {
-  margin-bottom: 0;
-}
-
-.markdown-body h1,
-.markdown-body h2,
-.markdown-body h3,
-.markdown-body h4,
-.markdown-body h5,
-.markdown-body h6 {
-  margin-top: 24px;
-  margin-bottom: 16px;
-  font-weight: 600;
-  line-height: 1.25;
-}
-
-.markdown-body h1 {
-  font-size: 2em;
-}
-
-.markdown-body h1,
-.markdown-body h2 {
-  padding-bottom: .3em;
-  border-bottom: 1px solid #434343;
-  color: #66cccc;
-}
-
-.markdown-body h2 {
-  font-size: 1.5em;
-  color: #66cccc;
-}
-
-.markdown-body h3 {
-  font-size: 1.25em;
-  color: #66cccc;
-}
-
-.markdown-body h4 {
-  font-size: 1em;
-  color: #66cccc;
-}
-
-.markdown-body h5 {
-  font-size: .875em;
-  color: #66cccc;
-}
-
-.markdown-body h6 {
-  font-size: .85em;
-  color: #66cccc;
-}
-
-.markdown-body ol,
-.markdown-body ul {
-  padding-left: 2em;
-}
-
-.markdown-body ol ol,
-.markdown-body ol ul,
-.markdown-body ul ol,
-.markdown-body ul ul {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.markdown-body li {
-  word-wrap: break-all;
-}
-
-.markdown-body li>p {
-  margin-top: 16px;
-}
-
-.markdown-body li+li {
-  margin-top: .25em;
-}
-
-.markdown-body dl {
-  padding: 0;
-}
-
-.markdown-body dl dt {
-  padding: 0;
-  margin-top: 16px;
-  font-size: 1em;
-  font-style: italic;
-  font-weight: 600;
-}
-
-.markdown-body dl dd {
-  padding: 0 16px;
-  margin-bottom: 16px;
-}
-
-.markdown-body table {
-  display: block;
-  width: 100%;
-  overflow: auto;
-}
-
-.markdown-body table th {
-  font-weight: 600;
-}
-
-.markdown-body table td,
-.markdown-body table th {
-  padding: 6px 13px;
-  border: 1px solid #717171;
-}
-
-.markdown-body table tr {
-  background-color: #2d2d2d;
-  border-top: 1px solid #717171;
-}
-
-.markdown-body table th {
-  background-color: #434343;
-}
-
-.markdown-body table tr:nth-child(2n) {
-  background-color: #323232;
-}
-
-.markdown-body img {
-  max-width: 100%;
-  box-sizing: initial;
-}
-
-.markdown-body img[align=right] {
-  padding-left: 20px;
-}
-
-.markdown-body img[align=left] {
-  padding-right: 20px;
-}
-
-.markdown-body code {
-  padding: .2em .4em;
-  margin: 0;
-  font-size: 85%;
-  background-color: #333333;
-  color: #999999;
-  border-radius: 3px;
-}
-
-.markdown-body pre {
-  word-wrap: normal;
-}
-
-.markdown-body pre>code {
-  padding: 0;
-  margin: 0;
-   font-size: 100%;
-  word-break: normal;
-  white-space: pre;
-  background: transparent;
-  border: 0;
-}
-
-.markdown-body .highlight {
-  margin-bottom: 16px;
-}
-
-.markdown-body .highlight pre {
-  margin-bottom: 0;
-  word-break: normal;
-}
-
-.markdown-body .highlight pre,
-.markdown-body pre {
-  padding: 16px;
-  overflow: auto;
-  font-size: 85%;
-  line-height: 1.45;
-  background-color: #333333;
-  border-radius: 3px;
-}
-
-.markdown-body pre code {
-  display: inline;
-  max-width: auto;
-  padding: 0;
-  margin: 0;
-  overflow: visible;
-  line-height: inherit;
-  word-wrap: normal;
-  background-color: initial;
-  border: 0;
-  color: #999999;
-}
-
-.markdown-body .task-list-item {
-  list-style-type: none;
-}
-
-.markdown-body .task-list-item+.task-list-item {
-  margin-top: 3px;
-}
-
-.markdown-body .task-list-item input {
-  margin: 0 .2em .25em -1.6em;
-  vertical-align: middle;
-}
-.markdown-body section.footnotes{
-    margin-top:48px;
-    border-top:solid 1px #494949;
-    padding-top:0px;
-}
-
-@media (prefers-color-scheme: dark) {
-  .markdown-body mark{color: #111;}
-}
-
-/* PrismJS 1.23.0
-https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript */
-/**
- * prism.js default theme for JavaScript, CSS and HTML
- * Based on dabblet (http://dabblet.com)
- * @author Lea Verou
- */
-
-
-code[class*="language-"],
-pre[class*="language-"] {
-    color: black;
-    background: none;
-    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    text-align: left;
-    white-space: pre;
-    word-spacing: normal;
-    word-break: normal;
-    word-wrap: normal;
-    -moz-tab-size: 4;
-    -o-tab-size: 4;
-    tab-size: 4;
-
-    -webkit-hyphens: none;
-    -moz-hyphens: none;
-    -ms-hyphens: none;
-    hyphens: none;
-}
-
-@media print {
-    code[class*="language-"],
-    pre[class*="language-"] {
-        text-shadow: none;
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Untergang1 的个人主页：做过的项目与最近的提交。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23E9A531'/%3E%3C/svg%3E">
+<title>Untergang1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+SC:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #FBFBFA;
+    --ink: #17191C;
+    --muted: #666C75;
+    --faint: #9AA0A8;
+    --rule: #E6E8EB;
+    --horizon: #C9CDD3;
+    --accent: #2A4FD6;
+    --sun-hi: #EDA531;
+    --sun-lo: #D9482B;
+    --col: 680px;
+    /* the sun's lane: centred in the right-hand margin on wide screens */
+    --lane: clamp(36px, calc((100vw - var(--col)) / 2 - 20px), 260px);
+    --sans: "IBM Plex Sans", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #111316; --ink: #E8EAED; --muted: #9098A3; --faint: #626973;
+      --rule: #262A30; --horizon: #3A4049; --accent: #8EA6FF;
+      --sun-hi: #F4BE55; --sun-lo: #EC6340; color-scheme: dark;
     }
-}
-
-/* Code blocks */
-pre[class*="language-"] {
-    padding: 1em;
-    margin: .5em 0;
-    overflow: auto;
-}
-
-:not(pre) > code[class*="language-"],
-pre[class*="language-"] {
-    background-color: #333333;
-}
-
-/* Inline code */
-:not(pre) > code[class*="language-"] {
-    padding: .1em;
-    border-radius: .3em;
-    white-space: normal;
-}
-
-.token.comment,
-.token.prolog,
-.token.doctype,
-.token.cdata {
-    color: #48be66;
-}
-
-.token.punctuation {
-    color: #8b86c9;
-}
-
-.token.namespace {
-    opacity: .7;
-}
-
-.token.property,
-.token.tag,
-.token.boolean,
-.token.number,
-.token.constant,
-.token.symbol,
-.token.deleted {
-    color: #8b86c9;
-}
-
-.token.selector,
-.token.attr-name,
-.token.string,
-.token.char,
-.token.builtin,
-.token.inserted {
-    color: #e6424b;
-}
-
-.token.operator,
-.token.entity,
-.token.url,
-.language-css .token.string,
-.style .token.string {
-    color: #$$codeBlockColor$$;
-}
-
-.token.atrule,
-.token.attr-value,
-.token.keyword {
-    color: #c33795;
-}
-
-.token.function,
-.token.class-name {
-    color: #67878e;
-}
-
-.token.regex,
-.token.important,
-.token.variable {
-    color: #d38e63;
-}
-
-.token.important,
-.token.bold {
-    font-weight: bold;
-}
-.token.italic {
-    font-style: italic;
-}
-
-.token.entity {
-    cursor: help;
-}
-
-
-pre[class*="language-"].line-numbers {
-  position: relative;
-  padding-left: 3.8em;
-  counter-reset: linenumber;
-}
-
-pre[class*="language-"].line-numbers > code {
-  position: relative;
-  white-space: inherit;
-}
-
-.line-numbers .line-numbers-rows {
-  position: absolute;
-  pointer-events: none;
-  top: 0;
-  font-size: 100%;
-  left: -3.8em;
-  width: 3em; /* works for line-numbers below 1000 lines */
-  letter-spacing: -1px;
-  border-right: 1px solid #6b6b6b;
-
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-
-}
-
-  .line-numbers-rows > span {
-    display: block;
-    counter-increment: linenumber;
+  }
+  :root[data-theme="dark"] {
+    --bg: #111316; --ink: #E8EAED; --muted: #9098A3; --faint: #626973;
+    --rule: #262A30; --horizon: #3A4049; --accent: #8EA6FF;
+    --sun-hi: #F4BE55; --sun-lo: #EC6340; color-scheme: dark;
   }
 
-    .line-numbers-rows > span:before {
-      content: counter(linenumber);
-      color: #6b6b6b;
-      display: block;
-      padding-right: 0.8em;
-      text-align: right;
-    }
-
-
-</style> <style>.mweb-charts{background:#fff;}
-body{ box-sizing: border-box;
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  html, body { overflow-x: hidden; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    padding-inline: 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+  main {
+    position: relative;
+    max-width: var(--col);
     margin: 0 auto;
-    padding: 28px}
-@media print{
-    pre, code, pre code {
-     overflow: visible !important;
-     white-space: pre-wrap !important;       /* css-3 */
-     white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
-     white-space: -pre-wrap !important;      /* Opera 4-6 */
-     white-space: -o-pre-wrap !important;    /* Opera 7 */
-     word-wrap: break-word !important;       /* Internet Explorer 5.5+ */
-    }
-    html,body{margin:0;padding:4px;}
-}
+    padding-block: 96px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+  }
+  a { color: inherit; text-decoration: none; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
 
+  /* ---------- header: a dictionary entry ---------- */
+  header { display: flex; flex-direction: column; gap: 22px; }
+  h1 {
+    margin: 0;
+    font-size: clamp(36px, 7.5vw, 48px);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+  }
+  .entry {
+    margin: -8px 0 0;
+    font-family: var(--mono); font-size: 13px; color: var(--faint);
+    display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline;
+  }
+  .entry .hw { color: var(--muted); }
+  .entry .pos { font-style: italic; }
+  .entry .gloss { font-family: var(--sans); color: var(--muted); }
+  .lede { margin: 0; color: var(--muted); max-width: 36em; text-wrap: pretty; }
 
+  /* ---------- sections ---------- */
+  section { display: flex; flex-direction: column; gap: 14px; }
+  .sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+  h2 {
+    margin: 0;
+    font-family: var(--mono); font-size: 12px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: .12em; color: var(--faint);
+  }
+  .sec-note { font-family: var(--mono); font-size: 12px; color: var(--faint); }
 
-div.code-toolbar {
-  position: relative;
-}
+  ul.list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+  ul.list li { border-bottom: 1px solid var(--rule); }
+  ul.list a {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2px 16px;
+    padding-block: 16px;
+  }
+  .name { font-weight: 500; transition: color .15s; }
+  .name::after { content: " ↗"; color: var(--faint); font-weight: 400; opacity: 0; transition: opacity .15s; }
+  ul.list a:hover .name, ul.list a:focus-visible .name { color: var(--accent); }
+  ul.list a:hover .name::after, ul.list a:focus-visible .name::after { opacity: 1; }
+  .meta {
+    font-family: var(--mono); font-size: 12px; color: var(--faint);
+    white-space: nowrap; align-self: center; font-variant-numeric: tabular-nums;
+  }
+  .desc { grid-column: 1 / -1; color: var(--muted); font-size: 14.5px; line-height: 1.65; text-wrap: pretty; }
 
-div.code-toolbar > .toolbar {
-  position: absolute;
-  z-index: 10;
-  top: .3em;
-  right: .2em;
-  transition: opacity 0.3s ease-in-out;
-  opacity: 0;
-}
+  /* last commit, typed out on hover */
+  .commit {
+    grid-column: 1 / -1;
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .22s ease;
+  }
+  .commit > span { overflow: hidden; min-height: 0; }
+  .commit .inner {
+    display: block; padding-top: 6px;
+    font-family: var(--mono); font-size: 12px; line-height: 1.6; color: var(--faint);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .commit .sha { color: var(--accent); }
+  .commit .msg { color: var(--muted); }
+  .commit .cursor {
+    display: inline-block; width: 6px; height: 12px; margin-left: 2px;
+    background: var(--faint); vertical-align: -1px; opacity: 0;
+  }
+  ul.list a.typing .cursor { opacity: 1; }
+  ul.list a:hover .commit, ul.list a:focus-visible .commit, ul.list a.typing .commit { grid-template-rows: 1fr; }
+  @media (hover: none) { .commit { grid-template-rows: 1fr; } }
 
-div.code-toolbar:hover > .toolbar {
-  opacity: 1;
-}
+  .refs { margin: 4px 0 0; font-size: 13.5px; color: var(--faint); line-height: 1.8; }
+  .refs a { color: var(--muted); border-bottom: 1px solid var(--rule); }
+  .refs a:hover { color: var(--accent); border-color: var(--accent); }
 
-/* Separate line b/c rules are thrown out if selector is invalid.
-   IE11 and old Edge versions don't support :focus-within. */
-div.code-toolbar:focus-within > .toolbar {
-  opacity: 1;
-}
+  footer {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px;
+    font-family: var(--mono); font-size: 13px; color: var(--faint);
+    border-top: 1px solid var(--rule);
+    padding-top: 20px;
+  }
+  footer nav { display: flex; gap: 20px; }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--accent); }
 
-div.code-toolbar > .toolbar > .toolbar-item {
-  display: inline-block;
-}
+  /* ---------- the setting sun ---------- */
+  .sky {
+    position: absolute; top: 0; left: 100%;
+    width: var(--lane); height: 0;
+    overflow: hidden; pointer-events: none;
+  }
+  .sun {
+    --p: 0;
+    position: absolute; left: 50%; top: 0;
+    width: 44px; height: 44px; margin: -22px 0 0 -22px;
+    color: color-mix(in oklab, var(--sun-lo) calc(var(--p) * 100%), var(--sun-hi));
+    will-change: transform;
+  }
+  .sun svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .sun .rays { opacity: calc(1 - var(--p) * 0.85); transform-origin: 22px 22px; }
+  .sun .glow { opacity: calc(0.10 + var(--p) * 0.18); }
+  .horizon-seg {
+    position: absolute; left: 100%;
+    width: var(--lane); height: 0;
+    border-top: 1px solid var(--horizon);
+    -webkit-mask: linear-gradient(90deg, transparent, #000 30%, #000 70%, transparent);
+            mask: linear-gradient(90deg, transparent, #000 30%, #000 70%, transparent);
+    pointer-events: none;
+  }
 
-div.code-toolbar > .toolbar > .toolbar-item > a {
-  cursor: pointer;
-}
+  @media (max-width: 800px) {
+    :root { --lane: 20px; }
+    .sun { width: 22px; height: 22px; margin: -11px 0 0 -11px; }
+    .sun .rays { display: none; }
+    .horizon-seg { display: none; }
+  }
+  @media (max-width: 520px) {
+    main { padding-block: 56px 40px; gap: 52px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .commit { transition: none; }
+  }
+</style>
+</head>
+<body>
+<main id="main">
+  <div class="sky" id="sky" aria-hidden="true">
+    <span class="sun" id="sun">
+      <svg viewBox="0 0 44 44">
+        <circle class="glow" cx="22" cy="22" r="15" fill="currentColor"/>
+        <g class="rays" id="rays" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <line x1="22" y1="3"  x2="22" y2="8"/>
+          <line x1="22" y1="36" x2="22" y2="41"/>
+          <line x1="3"  y1="22" x2="8"  y2="22"/>
+          <line x1="36" y1="22" x2="41" y2="22"/>
+          <line x1="8.6"  y1="8.6"  x2="12.1" y2="12.1"/>
+          <line x1="31.9" y1="31.9" x2="35.4" y2="35.4"/>
+          <line x1="8.6"  y1="35.4" x2="12.1" y2="31.9"/>
+          <line x1="31.9" y1="12.1" x2="35.4" y2="8.6"/>
+        </g>
+        <circle cx="22" cy="22" r="8.5" fill="currentColor"/>
+      </svg>
+    </span>
+  </div>
+  <div class="horizon-seg" id="hseg" aria-hidden="true"></div>
 
-div.code-toolbar > .toolbar > .toolbar-item > button {
-  background: none;
-  border: 0;
-  color: inherit;
-  font: inherit;
-  line-height: normal;
-  overflow: visible;
-  padding: 0;
-  -webkit-user-select: none; /* for button */
-  -moz-user-select: none;
-  -ms-user-select: none;
-}
+  <header>
+    <h1 id="name">Untergang1</h1>
+    <p class="entry">
+      <span class="hw">Un·ter·gang</span>
+      <span>/ˈʊntɐɡaŋ/</span>
+      <span class="pos">德 n.</span>
+      <span class="gloss">沉落；（日月）西沉</span>
+    </p>
+    <p class="lede">对计算机和 AI 里的很多东西都好奇，兴趣比较散。这里按时间记着做过的东西：最近是一些顺手的小工具和机器人，之前花了几个月在 GUI 智能体上。</p>
+  </header>
 
-div.code-toolbar > .toolbar > .toolbar-item > a,
-div.code-toolbar > .toolbar > .toolbar-item > button,
-div.code-toolbar > .toolbar > .toolbar-item > span {
-  color: inherit;
-  font-size: .8em;
-  padding: 4px .5em;
-  background: #f5f2f0;
-  background: rgba(224, 224, 224, 0.4);
-  box-shadow: 0 2px 0 0 rgba(0,0,0,0.2);
-  border-radius: .5em;
-}
+  <!--
+    Each project link carries:
+      data-repo    repository name under Untergang1
+      data-author  (forks only) whose commits to show and count
+      data-sha / data-date / data-msg / .n   fallback values, used if GitHub can't be reached
+    The latest commit and the commit count are refreshed from the GitHub API when the page loads.
+  -->
 
-div.code-toolbar > .toolbar > .toolbar-item > a:hover,
-div.code-toolbar > .toolbar > .toolbar-item > a:focus,
-div.code-toolbar > .toolbar > .toolbar-item > button:hover,
-div.code-toolbar > .toolbar > .toolbar-item > button:focus,
-div.code-toolbar > .toolbar > .toolbar-item > span:hover,
-div.code-toolbar > .toolbar > .toolbar-item > span:focus {
-  color: inherit;
-  text-decoration: none;
-}
-</style><script>window.MathJax = {     tex: { tags: 'ams', inlineMath: [ ['$','$'], ['\\(','\\)'] ] },     startup: {     pageReady() {       return MathJax.startup.defaultPageReady().then(function () {          window.mweb_mathjax_ready_val = 'yes';          if(window.mweb_mathjax_ready !== undefined){ mweb_mathjax_ready(); }       });     }   }};document.addEventListener('DOMContentLoaded', function(event) {    if (typeof Prism != 'undefined') {         Prism.highlightAll();     }});window.mweb_mathjax_ready_val = '';function theMWebMathJaxRenderIsReady(key){ return window.mweb_mathjax_ready_val; }</script><script>document.addEventListener('DOMContentLoaded', function(event) {window.mweb_mathjax_ready_val = 'yes';})</script></head><body><div id='markdown_content' class='markdown-body'><h1><a id="untergang%E7%9A%84%E4%B8%AA%E4%BA%BA%E4%B8%BB%E9%A1%B5" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Untergang 的个人主页</h1>
-<h2><a id="%E6%AC%A2%E8%BF%8E%E8%AE%BF%E9%97%AE%EF%BC%9A" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>欢迎访问：</h2>
-<ol>
-<li><strong><a href="https://github.com/Untergang1">github</a></strong></li>
-<li><strong><a href="https://www.zhihu.com/people/jesus-36-40">知乎</a></strong></li>
-</ol>
-</div></body></html>
+  <section>
+    <div class="sec-head"><h2>小工具</h2><span class="sec-note">2026.09</span></div>
+    <ul class="list">
+      <li><a href="https://github.com/Untergang1/pku2cal" target="_blank" rel="noopener" data-repo="pku2cal" data-sha="a216277" data-date="2026-09-25" data-msg="docs: add MIT license">
+        <span class="name">pku2cal</span>
+        <span class="meta">TypeScript · <span class="n">30</span></span>
+        <span class="desc">把北大课表转成 ICS 日历，支持单双周和停补课，可以发布到 GitHub Pages 或 Cloudflare Worker 供 Apple Calendar 订阅。</span>
+      </a></li>
+      <li><a href="https://github.com/Untergang1/codex-usage" target="_blank" rel="noopener" data-repo="codex-usage" data-sha="d16888b" data-date="2026-09-21" data-msg="docs: explain PATH installation and command updates">
+        <span class="name">codex-usage</span>
+        <span class="meta">Shell · <span class="n">5</span></span>
+        <span class="desc">在终端里查看本机 Codex 会话的 token 用量，按会话、日期和子代理汇总，可导出 JSON 或 TSV。</span>
+      </a></li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>微信机器人</h2><span class="sec-note">2026.09</span></div>
+    <ul class="list">
+      <li><a href="https://github.com/Untergang1/wechat-ai" target="_blank" rel="noopener" data-repo="wechat-ai" data-author="Untergang1" data-sha="7e242e5" data-date="2026-09-21" data-msg="Update README">
+        <span class="name">wechat-ai</span>
+        <span class="meta">fork · <span class="n">26</span></span>
+        <span class="desc">自部署的微信 AI 接入方案。加入了 OneBot v12 传输层，以及按时段运行、通过 Bark 推送的群关键词提醒。</span>
+      </a></li>
+      <li><a href="https://github.com/Untergang1/pawpilot-plugin" target="_blank" rel="noopener" data-repo="pawpilot-plugin" data-sha="cdd0a22" data-date="2026-09-21" data-msg="Initial commit">
+        <span class="name">pawpilot-plugin</span>
+        <span class="meta">JavaScript · <span class="n">1</span></span>
+        <span class="desc">Yunzai 的聊天与 Function Calling 插件，把自然语言转成已有插件的命令，私聊直接回复，群聊在 @ 时回复。</span>
+      </a></li>
+      <li><a href="https://github.com/Untergang1/Yunzai" target="_blank" rel="noopener" data-repo="Yunzai" data-author="Untergang1" data-sha="1e77d3a" data-date="2026-09-21" data-msg="docs: focus README on OneBot v12 and WeChat integration">
+        <span class="name">Yunzai</span>
+        <span class="meta">fork · <span class="n">4</span></span>
+        <span class="desc">为 Yunzai 增加 OneBot v12 反向 WebSocket 适配器，用来对接上面的微信接入。</span>
+      </a></li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>量化</h2><span class="sec-note">2026.08–09</span></div>
+    <ul class="list">
+      <li><a href="https://github.com/Untergang1/zvt" target="_blank" rel="noopener" data-repo="zvt" data-author="Untergang1" data-sha="5e97fd2" data-date="2026-09-06" data-msg="docs: add development TODO roadmap">
+        <span class="name">zvt</span>
+        <span class="meta">fork · <span class="n">117</span></span>
+        <span class="desc">独立维护的 ZVT 个人版。接入东方财富、新浪和同花顺数据，支持增量采集、因子研究和日线策略回测。</span>
+      </a></li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>GUI 智能体</h2><span class="sec-note">2024.03–2026.07</span></div>
+    <ul class="list">
+      <li><a href="https://github.com/Untergang1/UIAgent" target="_blank" rel="noopener" data-repo="UIAgent" data-sha="03df8ee" data-date="2026-07-30" data-msg="docs: restore project summary report">
+        <span class="name">UIAgent</span>
+        <span class="meta">Python · <span class="n">143</span></span>
+        <span class="desc">Windows 桌面自动化。录制操作流程，编译成可复用的 Routine，执行时由控制器在 Routine 和点击、输入等原子操作之间选择。</span>
+      </a></li>
+      <li><a href="https://github.com/Untergang1/OSWorld" target="_blank" rel="noopener" data-repo="OSWorld" data-author="untergang404" data-sha="546f56e" data-date="2026-07-30" data-msg="Restore SciKit adaptation report">
+        <span class="name">OSWorld</span>
+        <span class="meta">fork · <span class="n">70</span></span>
+        <span class="desc">在 OSWorld 基准里加入 OMNIC、Avantage 等 Windows 科学软件任务，并接入 UIAgent 做评测。</span>
+      </a></li>
+      <li><a href="https://github.com/Untergang1/ui-tars-lora" target="_blank" rel="noopener" data-repo="ui-tars-lora" data-sha="6d02af2" data-date="2026-07-29" data-msg="docs: remove project report">
+        <span class="name">ui-tars-lora</span>
+        <span class="meta">Python · <span class="n">33</span></span>
+        <span class="desc">为每个应用单独训练 UI-TARS-1.5-7B 的定位 LoRA：输入截图和元素描述，输出一个点击坐标。</span>
+      </a></li>
+      <li><a href="https://github.com/Untergang1/AppAgent" target="_blank" rel="noopener" data-repo="AppAgent" data-author="Untergang1" data-sha="6321998" data-date="2025-06-27" data-msg="add app">
+        <span class="name">AppAgent</span>
+        <span class="meta">fork · <span class="n">22</span></span>
+        <span class="desc">在手机端智能体 AppAgent 上补充训练、评估流程，并尝试接入 Graph-RAG。</span>
+      </a></li>
+    </ul>
+    <p class="refs">也读过：
+      <a href="https://github.com/Untergang1/MobileAgent" target="_blank" rel="noopener">MobileAgent</a>、
+      <a href="https://github.com/Untergang1/WebVoyager" target="_blank" rel="noopener">WebVoyager</a>、
+      <a href="https://github.com/Untergang1/android_world" target="_blank" rel="noopener">android_world</a>、
+      <a href="https://github.com/Untergang1/CogVLM" target="_blank" rel="noopener">CogVLM</a>、
+      <a href="https://github.com/Untergang1/imp" target="_blank" rel="noopener">imp</a>
+    </p>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>更早</h2><span class="sec-note">2024.12</span></div>
+    <ul class="list">
+      <li><a href="https://github.com/Untergang1/AIMedical" target="_blank" rel="noopener" data-repo="AIMedical" data-sha="c5dc560" data-date="2024-12-30" data-msg="Update Readme">
+        <span class="name">AIMedical</span>
+        <span class="meta">Vue · <span class="n">20</span></span>
+        <span class="desc">结合大模型和医学知识库的问诊系统，根据症状推荐科室、给出诊断建议。</span>
+      </a></li>
+    </ul>
+  </section>
+
+  <footer id="horizon">
+    <span>数字为提交数</span>
+    <nav>
+      <a href="https://github.com/Untergang1" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/Untergang1?tab=repositories" target="_blank" rel="noopener">全部仓库</a>
+    </nav>
+  </footer>
+</main>
+
+<script>
+(() => {
+  const USER = "Untergang1";
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const canHover = matchMedia("(hover: hover)").matches;
+  const links = [...document.querySelectorAll("ul.list a[data-repo]")];
+
+  /* ---------- last commit line ---------- */
+  links.forEach(a => {
+    const box = document.createElement("span");
+    box.className = "commit";
+    box.innerHTML = '<span><span class="inner"><span class="sha"></span> <span class="msg"></span><span class="cursor"></span></span></span>';
+    a.appendChild(box);
+    const sha = box.querySelector(".sha");
+    const msg = box.querySelector(".msg");
+    const text = () => `${a.dataset.msg}  · ${a.dataset.date}`;
+    const fill = () => { sha.textContent = a.dataset.sha; msg.textContent = text(); };
+    a._fill = fill;
+    fill();
+    if (!canHover || reduce) return;
+
+    let timer = null;
+    const start = () => {
+      clearInterval(timer);
+      const full = text();
+      sha.textContent = a.dataset.sha;
+      msg.textContent = "";
+      a.classList.add("typing");
+      let i = 0;
+      timer = setInterval(() => {
+        msg.textContent = full.slice(0, ++i);
+        if (i >= full.length) { clearInterval(timer); setTimeout(() => a.classList.remove("typing"), 600); }
+      }, 22);
+    };
+    const stop = () => { clearInterval(timer); a.classList.remove("typing"); fill(); };
+    a.addEventListener("mouseenter", start);
+    a.addEventListener("focus", start);
+    a.addEventListener("mouseleave", stop);
+    a.addEventListener("blur", stop);
+  });
+
+  /* ---------- live data from GitHub (cached for an hour per visitor) ---------- */
+  const TTL = 60 * 60 * 1000;
+  const KEY = "gh-latest-v1";
+  const readCache = () => { try { const c = JSON.parse(localStorage.getItem(KEY)); return c && Date.now() - c.t < TTL ? c.d : null; } catch (e) { return null; } };
+  const writeCache = d => { try { localStorage.setItem(KEY, JSON.stringify({ t: Date.now(), d })); } catch (e) {} };
+
+  const apply = data => links.forEach(a => {
+    const r = data[a.dataset.repo];
+    if (!r) return;
+    a.dataset.sha = r.sha; a.dataset.date = r.date; a.dataset.msg = r.msg;
+    if (r.count) a.querySelector(".n").textContent = r.count;
+    a._fill();
+  });
+
+  const fetchOne = async a => {
+    const q = new URLSearchParams({ per_page: "1" });
+    if (a.dataset.author) q.set("author", a.dataset.author);
+    const res = await fetch(`https://api.github.com/repos/${USER}/${a.dataset.repo}/commits?${q}`,
+                            { headers: { Accept: "application/vnd.github+json" } });
+    if (!res.ok) throw new Error(res.status);
+    const list = await res.json();
+    if (!list.length) return null;
+    const c = list[0];
+    // with per_page=1 the "last" page number equals the number of commits
+    const last = (res.headers.get("Link") || "").match(/[?&]page=(\d+)>;\s*rel="last"/);
+    return {
+      sha: c.sha.slice(0, 7),
+      date: (c.commit.author?.date || c.commit.committer?.date || "").slice(0, 10),
+      msg: c.commit.message.split("\n")[0],
+      count: last ? Number(last[1]) : list.length
+    };
+  };
+
+  const cached = readCache();
+  if (cached) apply(cached);
+  else Promise.allSettled(links.map(fetchOne)).then(results => {
+    const data = {};
+    results.forEach((r, i) => { if (r.status === "fulfilled" && r.value) data[links[i].dataset.repo] = r.value; });
+    if (Object.keys(data).length) { apply(data); writeCache(data); }
+  });
+
+  /* ---------- the sun sets as you scroll ---------- */
+  const sky = document.getElementById("sky");
+  const sun = document.getElementById("sun");
+  const rays = document.getElementById("rays");
+  const hseg = document.getElementById("hseg");
+  const name = document.getElementById("name");
+  const horizon = document.getElementById("horizon");
+  let startY = 0, endY = 0, ticking = false;
+
+  const measure = () => {
+    startY = name.offsetTop + name.offsetHeight * 0.5;
+    endY = horizon.offsetTop;
+    sky.style.height = endY + "px";
+    hseg.style.top = endY + "px";
+    place();
+  };
+  const place = () => {
+    ticking = false;
+    const max = document.documentElement.scrollHeight - innerHeight;
+    const p = max > 4 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
+    sun.style.transform = `translateY(${startY + (endY - startY) * p}px)`;
+    sun.style.setProperty("--p", (p * p).toFixed(3));
+    rays.style.transform = `rotate(${p * 90}deg)`;
+  };
+  addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(place); } }, { passive: true });
+  addEventListener("resize", measure);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  measure();
+})();
+</script>
+</body>
+</html>
