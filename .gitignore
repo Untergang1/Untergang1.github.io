@@ -1,4 +1,6 @@
 /_site/
 /.local-notes.md
+/AGENTS.md
+/README.md
 __pycache__/
 *.pyc
